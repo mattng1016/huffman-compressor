@@ -58,19 +58,3 @@ void HuffmanTree::buildBits(Node* node, std::string s, std::array<std::string, 2
   buildBits(node->right, s + "1", path);
 }
 
-int main(int argc, char *argv[]) {
-  if (argc != 2) {
-    printf("./fileCompressor <Path>");
-    exit(0);
-  }
-  u_int64_t *arr = readBit(argv[1]);
-  std::array<std::string, 256> path;
-  HuffmanTree t;
-  t.build(arr);
-  //t.printTree();
-  t.buildBits(t.root, "", path);
-  
-
-  free(arr);
-  return 0;
-}

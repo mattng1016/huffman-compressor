@@ -3,6 +3,7 @@
 #include <cstring>
 #include <string>
 #include <array>
+#include <iostream>
 
 #include "bitWriter.h"
 
@@ -32,6 +33,5 @@ void newFile(const char* path, std::array<std::string, 256> &table)  {
     buffer <<= (8-bitCounter);
     fputc(buffer, huffFile);
   }
-
 }
 
