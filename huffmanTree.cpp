@@ -70,8 +70,10 @@ int main(int argc, char *argv[]) {
   //t.printTree();
   t.buildBits(t.root, "", path);
   
-  for (auto i : path) {
-    std::cout << i << "\n";
+  for (int i = 0; i < 256; i++) {
+    if (path[i] != "") {
+      std::cout << i << ": " << path[i]<< "\n";
+    }
   }
   free(arr);
   return 0;
