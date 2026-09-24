@@ -21,8 +21,17 @@ void newFile(const char* path, std::array<std::string, 256> &table)  {
     for (auto bit : code) {
       buffer = (buffer << 1) | (bit - '0');
       bitCounter++;
+      if (bitCounter == 8) {
+        fputc(buffer, huffFile);
+        buffer = 0;
+        bitCounter = 0;
+      }
     }
   } 
+  if (bitCounter > 0) {
+    buffer <<= (8-bitCounter);
+    fputc(buffer, huffFile);
+  }
 
 }
 
