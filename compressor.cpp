@@ -5,7 +5,7 @@
 
 #include "bitReader.h"
 #include "bitWriter.h"
-#include "huffmanTree.h"
+#include "compressor.h"
 
 bool validatePath(const char* path) {
   struct stat buffer;
@@ -20,12 +20,16 @@ void compressor(const char* p) {
     printf("Error: Invalid path: %s\n", p);
     exit(0);
   }
-  u_int64_t *arr = readBit(p);
+  struct stat info;
+  stat(p, &info);
+  uint64_t originalSize = info.st_size;
   std::array<std::string, 256> path;
+  u_int64_t *arr = readBit(p);
   HuffmanTree t;
   t.build(arr);
   t.buildBits(t.root, "", path);
-  newFile(p, path);
-  
+  FILE* f = newFile(p, path, t.root, originalSize); 
+   
+
   free(arr);
 }

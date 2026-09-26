@@ -11,8 +11,10 @@ int main(int argc, char *argv[]) {
     printf("Error: Usage: ./fileCompressor <file>\n");
     exit(0);
   }
+  std::array<std::string, 256> path;
 
   compressor(argv[1]);
+  decompressor(argv[1]);
 
  return 0;
 }
