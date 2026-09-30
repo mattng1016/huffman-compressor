@@ -26,6 +26,7 @@ struct BitReader {
 
 Node* readNode(BitReader& bits) {
   int marker = bits.readBit();
+  if (marker == -1) return nullptr;
 
   if (marker == 1) {
     uint8_t value = 0;
@@ -44,6 +45,13 @@ Node* readNode(BitReader& bits) {
   return node;
 }
 
+bool isLeaf(Node* node) {
+  if (node->left == nullptr && node->right == nullptr) {
+    return true;
+  }
+  return false;
+}
+
 void decompressor(const char* path) {
   FILE* decompressed = fopen("decompressed.txt", "w+b");  
   FILE* compressed = fopen(path, "rb");
@@ -58,20 +66,26 @@ void decompressor(const char* path) {
   
   Node* current = root;
   int done = 0;
+
+  // If huffman tree's root is only node (file has one type of char)
+  if (isLeaf(current)) {
+    for (int i = 0; i < size; i++) {
+      fputc(current->value, decompressed);
+    }
+    return;
+  }
+
   while (done < size) {
     if (current->left == nullptr && current->right == nullptr) {
       fputc(current->value, decompressed);
-      std::cout << "char: " << current->value << "\n";
       current = root;
       done++;
     } 
     int b = bits.readBit();
     if (b == 1) {
       current = current->right;
-      std::cout << "right";
     } else if (b == 0) {
       current = current->left;
-      std::cout << "left";
     } 
   }
 }
