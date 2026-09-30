@@ -50,7 +50,7 @@ void writeTree(BitWriter& out, const Node* node) {
   writeTree(out, node->right);
 }
 
-FILE* newFile(const char* path, std::array<std::string, 256> &table, Node* root, uint64_t originalSize)  {
+FILE* newFile(const char* path, std::array<std::string, 256> &table, Node* root, uint64_t *originalSize)  {
   std::string s(path);
   s = s + ".huff";
   const char* p = s.c_str();
@@ -58,7 +58,7 @@ FILE* newFile(const char* path, std::array<std::string, 256> &table, Node* root,
   FILE* huffFile = std::fopen(p, "w+b");
   FILE* oldFile = std::fopen(path, "rb");
 
-  fwrite(&originalSize, sizeof(originalSize), 1, huffFile); 
+  fwrite(originalSize, 8, 1, huffFile); 
 
   BitWriter out {huffFile};
 

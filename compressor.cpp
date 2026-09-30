@@ -28,7 +28,7 @@ void compressor(const char* p) {
   HuffmanTree t;
   t.build(arr);
   t.buildBits(t.root, "", path);
-  FILE* f = newFile(p, path, t.root, originalSize); 
+  FILE* f = newFile(p, path, t.root, &originalSize); 
    
 
   free(arr);

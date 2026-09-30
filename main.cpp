@@ -14,7 +14,9 @@ int main(int argc, char *argv[]) {
   std::array<std::string, 256> path;
 
   compressor(argv[1]);
-  decompressor(argv[1]);
+  std::string h = argv[1];
+  h = h + ".huff";
+  decompressor(h.c_str());
 
  return 0;
 }
