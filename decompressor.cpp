@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <cstdint>
+#include <pthread.h>
 #include "decompressor.h"
 #include "huffmanTree.h"
 
@@ -53,6 +54,24 @@ void decompressor(const char* path) {
   std::cout << "Size: " << size;
 
   BitReader bits{compressed};
-  Node* node = readNode(bits);
+  Node* root = readNode(bits);
   
+  Node* current = root;
+  int done = 0;
+  while (done < size) {
+    if (current->left == nullptr && current->right == nullptr) {
+      fputc(current->value, decompressed);
+      std::cout << "char: " << current->value << "\n";
+      current = root;
+      done++;
+    } 
+    int b = bits.readBit();
+    if (b == 1) {
+      current = current->right;
+      std::cout << "right";
+    } else if (b == 0) {
+      current = current->left;
+      std::cout << "left";
+    } 
+  }
 }
